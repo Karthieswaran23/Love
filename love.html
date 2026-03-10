@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Love!</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-yellow: #fff0f3;
+            --accent-purple: #7209b7;
+        }
 
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--soft-yellow);
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        section {
+            display: none;
+            min-height: 100vh;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .active { display: flex; }
+
+        h1 { color: var(--primary-pink); font-size: 3rem; }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .btn:hover { transform: scale(1.1); background: #ff758f; }
+
+        /* Intro Quiz */
+        .quiz-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        /* Gallery */
+        .gallery {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .photo-frame {
+            width: 200px;
+            height: 250px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            transition: 0.3s;
+        }
+
+        .photo-frame:nth-child(even) { transform: rotate(3deg); }
+        .photo-frame img { width: 100%; height: 80%; object-fit: cover; }
+        .photo-frame:hover { transform: rotate(0deg) scale(1.1); z-index: 10; }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            color: var(--primary-pink);
+            font-size: 1.5rem;
+            animation: float 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <section id="page1" class="active">
+        <h1 class="animate__animated animate__bounceIn">🛑 STOP RIGHT THERE!</h1>
+        <p style="font-size: 1.5rem;">Identify yourself! Who is the prettiest girl in the world?</p>
+        <div class="quiz-container">
+            <button class="btn" onclick="wrongAnswer()">Keerthy suresh</button>
+            <button class="btn" onclick="nextPage(2)">Ennutu Chellakutty</button>
+            <button class="btn" onclick="wrongAnswer()">Samantha</button>
+            <button class="btn" onclick="wrongAnswer()">Aishwarya Rai</button>
+        </div>
+        <p id="error-msg" style="color: red; margin-top: 20px; font-weight: bold;"></p>
+    </section>
+
+    <section id="page2">
+        <h1 class="animate__animated animate__heartBeat animate__infinite">Advance Happy Birthday, Life_partner 🎂</h1>
+        <p style="max-width: 600px; font-size: 1.2rem; line-height: 1.6;">
+            I was going to get you a Ferrari, but I thought a website made with love was much more sentimental. 
+            May your day be as bright as your smile and as sweet as your favorite dessert!
+        </p>
+        <button class="btn" onclick="nextPage(3)">Click for a surprise 🎁</button>
+    </section>
+
+    <section id="page3">
+        <h1>Our Memories 📸</h1>
+        <div class="gallery">
+            <div class="photo-frame">
+                <img src="photo1.jpeg" alt="Memory 1">
+                <p>Best One</p>
+            </div>
+            <div class="photo-frame">
+                <img src="photo2.jpeg" alt="Memory 2">
+                <p>My Cutest</p>
+            </div>
+            <div class="photo-frame">
+                <img src="photo3.jpeg" alt="Memory 3">
+                <p>Fav Date</p>
+            </div>
+        </div>
+        <button class="btn" style="margin-top: 40px;" onclick="nextPage(4)">One last thing...</button>
+    </section>
+
+    <section id="page4">
+        <h1 class="animate__animated animate__fadeInUp">I Love You! ❤️</h1>
+        <p style="font-size: 1.3rem;">To many more birthdays and endless laughs together.</p>
+        <div style="font-size: 5rem;">🥳🎈✨</div>
+        <button class="btn" onclick="nextPage(1)">Start Over?</button>
+    </section>
+
+    <script>
+        function nextPage(pageNumber) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Show target section
+            document.getElementById('page' + pageNumber).classList.add('active');
+            
+            if(pageNumber === 2) {
+                createHearts();
+            }
+        }
+
+        function wrongAnswer() {
+            const msgs = ["Nice try, but nope!", "Are you sure? 🤨", "Try again, smarty pants!", "Incorrect! Hint: It's YOU!"];
+            document.getElementById('error-msg').innerText = msgs[Math.floor(Math.random() * msgs.length)];
+        }
+
+        function createHearts() {
+            for(let i=0; i<20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '❤️';
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(heart);
+                }, i * 300);
+            }
+        }
+    </script>
+</body>
+</html>
